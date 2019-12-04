@@ -18,6 +18,12 @@ class PoemsController < ApplicationController
         end
     end
 
+    def update
+        poem = Poem.find(params[:id]);
+        poem.update(modified_content: params[:modified_content])
+        render json: poem
+    end
+
     private
     def poem_params
         params.require(:poem).permit(:title, :content, :modified_content)
