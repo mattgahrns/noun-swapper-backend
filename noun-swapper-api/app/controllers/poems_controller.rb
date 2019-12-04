@@ -6,7 +6,13 @@ class PoemsController < ApplicationController
 
     def create
         poem = Poem.new(poem_params)
-        poem.user_id = User.first.id
+        if User.find_by(username: params[:username])
+            user = User.find_by(username: params[:username])
+            poem.user_id = user.id
+        else
+            user = User.create(username: params[:username])
+            poem.user_id = user.id
+        end
         if poem.save
             render json: poem
         end
@@ -14,6 +20,6 @@ class PoemsController < ApplicationController
 
     private
     def poem_params
-        params.require(:poem).permit(:content, :modified_content)
+        params.require(:poem).permit(:title, :content, :modified_content)
     end
 end
