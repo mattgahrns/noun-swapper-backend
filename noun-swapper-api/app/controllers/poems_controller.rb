@@ -1,7 +1,7 @@
 class PoemsController < ApplicationController
     def index
         poems = Poem.all
-        render json: poems
+        render json: poems, include: [:user]
     end
 
     def create
@@ -14,14 +14,14 @@ class PoemsController < ApplicationController
             poem.user_id = user.id
         end
         if poem.save
-            render json: poem
+            render json: poem, include: [:user]
         end
     end
 
     def update
         poem = Poem.find(params[:id]);
         poem.update(modified_content: params[:modified_content])
-        render json: poem
+        render json: poem, include: [:user]
     end
 
     private
